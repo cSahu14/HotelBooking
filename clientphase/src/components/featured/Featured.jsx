@@ -1,9 +1,12 @@
 import React from "react";
 import Styles from "../../Styles/featured/Featured.module.css";
+import useFetch from "../../hooks/useFetch";
 
 const Featured = () => {
+  const {data, loading, error} = useFetch("/hotels/countByCity?cities=delhi,mumbai,pune")
   return (
     <div className={Styles.featured}>
+     { loading ? "loading please wait" : <>
       <div className={Styles.featuredItem}>
         <img
           src="https://cf.bstatic.com/xdata/images/city/600x600/684534.jpg?k=d1fe86c22f2433f4e2dda14ddcbe80feb024b0fb30305e5684a1241fba5d4cff&o="
@@ -11,8 +14,8 @@ const Featured = () => {
           className={Styles.featuredImg}
         />
         <div className={Styles.featuredTitles}>
-          <h1>Bangalore</h1>
-          <h2>123 properties</h2>
+          <h1>Delhi</h1>
+          <h2>{data[0]} properties</h2>
         </div>
       </div>
       <div className={Styles.featuredItem}>
@@ -22,8 +25,8 @@ const Featured = () => {
           className={Styles.featuredImg}
         />
         <div className={Styles.featuredTitles}>
-          <h1>Delhi</h1>
-          <h2>333 properties</h2>
+          <h1>Mumbai</h1>
+          <h2>{data[1]} properties</h2>
         </div>
       </div>
       <div className={Styles.featuredItem}>
@@ -33,10 +36,12 @@ const Featured = () => {
           className={Styles.featuredImg}
         />
         <div className={Styles.featuredTitles}>
-          <h1>Mumbai</h1>
-          <h2>666 properties</h2>
+          <h1>Pune</h1>
+          <h2>{data[2]} properties</h2>
         </div>
       </div>
+      </>
+      }
     </div>
   );
 };

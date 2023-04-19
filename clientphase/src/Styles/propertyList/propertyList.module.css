@@ -20,7 +20,9 @@
 }
 
 .pListTitles > h1 {
+    text-transform: capitalize;
     font-size: 18px;
+    color: #444;
 }  
 
 .pListTitles > h2 {

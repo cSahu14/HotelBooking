@@ -1,7 +1,10 @@
 import React from 'react'
 import Styles from "../../Styles/featuredProperties/FeaturedProperties.module.css"
+import useFetch from '../../hooks/useFetch'
 
 const FeaturedProperties = () => {
+    const {data, loading, error} = useFetch("/hotels/countByType")
+
   return (
     <div className={Styles.fp}>
         <div className={Styles.fpItem}>
