@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Styles from "../../Styles/header/Header.module.css";
 import {
   faBed,
@@ -18,11 +18,13 @@ import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { SearchContext } from "../../context/SearchContext";
+import { AuthContext } from "../../context/AuthContext";
 
 const Header = ({ type }) => {
   const [openDate, setOpenDate] = useState(false);
   const [destination, setDestination] = useState("");
-  const [date, setDate] = useState([
+  const [dates, setDates] = useState([
     {
       startDate: new Date(),
       endDate: new Date(),
@@ -37,6 +39,8 @@ const Header = ({ type }) => {
   });
 
   const navigate = useNavigate()
+  const {user} = useContext(AuthContext)
+
 
   const handleOption = (name, operation) => {
     setOptions((prev) => {
@@ -47,8 +51,11 @@ const Header = ({ type }) => {
     });
   };
 
+  const {dispatch} = useContext(SearchContext)
+
   const handleSearch = () => {
-    navigate("/hotels", {state : {destination, date, options}})
+    dispatch({type: "NEW_SEARCH", payload: {destination, dates, options}})
+    navigate("/hotels", {state : {destination, dates, options}})
   }
 
   return (
@@ -91,7 +98,7 @@ const Header = ({ type }) => {
               Get rewards for your travels - unlock instant savings of 10% or
               more with a free csbookings account
             </p>
-            <button className={Styles.headerBtn}>Sign in / Register</button>
+            {!user && <button className={Styles.headerBtn}>Sign in / Register</button>}
             <div className={Styles.headerSearch}>
               <div className={Styles.headerSearchItem}>
                 <FontAwesomeIcon icon={faBed} className={Styles.headerIcon} />
@@ -110,17 +117,17 @@ const Header = ({ type }) => {
                 <span
                   className={Styles.headerSearchText}
                   onClick={() => setOpenDate(!openDate)}
-                >{`${format(date[0].startDate, "MM/dd/yyyy")} to ${format(
-                  date[0].endDate,
+                >{`${format(dates[0].startDate, "MM/dd/yyyy")} to ${format(
+                  dates[0].endDate,
                   "MM/dd/yyyy"
                 )}`}</span>
                 {openDate && (
                   <DateRange
                     editableDateInputs={true}
-                    onChange={(item) => setDate([item.selection])}
+                    onChange={(item) => setDates([item.selection])}
                     moveRangeOnFirstSelection={false}
-                    ranges={date}
-                    className={Styles.date}
+                    ranges={dates}
+                    className={Styles.dates}
                     minDate={new Date()}
                   />
                 )}
