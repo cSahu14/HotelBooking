@@ -11,7 +11,6 @@ const FeaturedProperties = () => {
         "Loading"
       ) : (
         <>
-          `{" "}
           {data?.map((item) => (
             <div className={Styles.fpItem} key={item._id}>
               <img src={item.photos[0]} alt="" className={Styles.fpImg} />
